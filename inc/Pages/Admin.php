@@ -25,10 +25,22 @@ class Admin extends BaseController
 
     public function add_admin_pages() {
         add_menu_page('FST3_Lagerverwaltung', 'Lagerverwaltung', 'manage_options', 'gyc_lv', array( $this, 'admin_index' ), 'dashicons-buddicons-community', 110);
+
+        #Subpages with Right for new Groups
+        add_submenu_page('gyc_lv', 'Lagerstand', 'Lagerstand','lvmit', 'gyc_lstand', array( $this, 'admin_lstand' ));
+        add_submenu_page('gyc_lv', 'Lagertransaktionen', 'Lagertransaktionen', 'lvmgmt', 'gyc_ltrans', array( $this, 'admin_ltrans' ));
     }
 
     public function admin_index() {
         require_once $this->plugin_path . 'templates/admin_index.php';
+    }
+
+    public function admin_lstand() {
+        require_once $this->plugin_path . 'templates/admin_lstand.php';
+    }
+
+    public function admin_ltrans() {
+        require_once $this->plugin_path . 'templates/admin_ltrans.php';
     }
 
 }
