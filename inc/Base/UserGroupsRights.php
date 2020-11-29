@@ -15,25 +15,28 @@ use \Inc\Base\BaseController;
 class UserGroupsRights extends BaseController {
 
     public function register() {
-        create_roles();
+        $this->create_roles();
     }
 
     public function create_roles() {
-        $mitarbeiter_role_set = get_role( 'mitarbeiter' )->capabilities;
+        get_role( 'administrator' ) -> add_cap('lvmit', true);
+
+        get_role( 'administrator' ) -> add_cap('lvmgmt', true);
+
+
+        $mitarbeiter_role_set = get_role( 'shop_manager' )->capabilities;
  
         // Add a new capability.
         $role = 'lmitarb';
         $display_name = 'Lagermitarbeiter';
-        $role -> add_cap('lvmit', true);
         add_role( $role, $display_name, $mitarbeiter_role_set );
+        get_role( 'lmitarb' ) -> add_cap('lvmit', true);
 
-
-        $mitarbeiter_role_set = get_role( 'mitarbeiter' )->capabilities;
+        $mitarbeiter_role_set = get_role( 'shop_manager' )->capabilities;
         // Add a new capability.
         $role = 'lvmanagement';
         $display_name = 'Lagermanagement';
-        $role -> add_cap('lvmgmt', true);
         add_role( $role, $display_name, $mitarbeiter_role_set );
-        
+        get_role( 'lvmanagement' ) -> add_cap('lvmgmt', true);
     }
 }
