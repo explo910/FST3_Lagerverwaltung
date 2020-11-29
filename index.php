@@ -1,2 +1,2 @@
 <?php
-// Security
+// Silence is golden.

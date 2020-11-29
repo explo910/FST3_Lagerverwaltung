@@ -1,0 +1,11 @@
+{
+    "name": "fst3/fst3lagerverwaltung",
+    "description": "GetYourCake Lagerverwaltungsplugin",
+    "type": "project",
+    "license": "GPLv3",
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {"Inc\\": "./inc"}
+    }
+}
