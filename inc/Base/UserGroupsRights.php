@@ -12,7 +12,7 @@ namespace Inc\Base;
 
 use \Inc\Base\BaseController;
 
-class UserGroupRights extends BaseController {
+class UserGroupsRights extends BaseController {
 
     public function register() {
         create_roles();
