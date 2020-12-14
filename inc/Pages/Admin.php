@@ -29,6 +29,7 @@ class Admin extends BaseController
         #Subpages with Right for new Groups
         add_submenu_page('gyc_lv', 'Lagerstand', 'Lagerstand','lvmit', 'gyc_lstand', array( $this, 'admin_lstand' ));
         add_submenu_page('gyc_lv', 'Lagertransaktionen', 'Lagertransaktionen', 'lvmgmt', 'gyc_ltrans', array( $this, 'admin_ltrans' ));
+        add_submenu_page('null', 'Lageraktualisierung', 'Lageraktualisierung', 'lvmit', 'gyc_lakt', array( $this, 'admin_lakt' ));
     }
 
     public function admin_index() {
@@ -41,6 +42,10 @@ class Admin extends BaseController
 
     public function admin_ltrans() {
         require_once $this->plugin_path . 'templates/admin_ltrans.php';
+    }
+
+    public function admin_lakt() {
+        require_once $this->plugin_path . 'templates/admin_lakt.php';
     }
 
 }

@@ -22,6 +22,10 @@ class Enqueue extends BaseController {
     function enqueue() {
         wp_enqueue_style('mypluginstyle', $this->plugin_url . 'assets/mystyle.css');
         wp_enqueue_script('mypluginscript', $this->plugin_url .'assets/myscript.js');
+
+        //Bootstrap
+        wp_enqueue_style('mybootstrapcss', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css');
+        wp_enqueue_script('mybootstrapjs', 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js');
     }
 
 }
