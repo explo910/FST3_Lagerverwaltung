@@ -8,7 +8,7 @@
 
 <div class="container; col-8">
     <div class="row">
-        <h1>Lagerstand Zutaten</h1>
+        <h2>Lagerstand Zutaten</h2>
     </div>
 </div>
 
@@ -17,20 +17,24 @@
         <?php
             global $wpdb;
             // this adds the prefix which is set by the user upon instillation of wordpress
-            $table_name1 = $wpdb->prefix . "posts";
-            $table_name2 = $wpdb->prefix . "wc_product_meta_lookup";
+            $table_posts = $wpdb->prefix . "posts";
+            $table_pml = $wpdb->prefix . "wc_product_meta_lookup";
+            $table_tr = $wpdb->prefix . "term_relationships";
+            $table_t = $wpdb->prefix . "terms";
             // this will get the data from your table
             //$retrieve_data = $wpdb->get_results( "SELECT ID, post_title FROM $table_name where post_type = 'product' and post_status='publish'" );
 
             $retrieve_data = $wpdb->get_results
             ( 
                 "SELECT po.post_title, pm.stock_quantity, po.ID
-                FROM $table_name1 AS `po` , $table_name2 AS `pm` 
+                FROM $table_posts AS `po` , $table_pml AS `pm`, $table_tr as `tr`, $table_t as `t`
                 WHERE
                 po.ID = pm.product_id and
+                po.ID =tr.object_id and
                 po.post_type = 'product' and
                 po.post_status = 'publish' and
-                po.post_excerpt = 'ZUTAT'"
+                tr.term_taxonomy_id=t.term_id and
+                t.name='Zutaten'"
             );
         ?>
         <table class="table">

@@ -17,7 +17,8 @@ final class Init {
             Pages\Admin::class,
             Base\Enqueue::class,
             Base\SettingsLinks::class,
-            Base\UserGroupsRights::class
+            Base\UserGroupsRights::class,
+            Base\ManipulateWooCommerce::class
         ];
     }
 

@@ -2,7 +2,7 @@
 /**
  * @package DasPlugin
  */
-global $id, $stockup, $DataTitle, $DataAvRating, $DataRatingCount, $DataQua, $DataId,  $DataStockStatus, $DataProduktBeschreibung;
+global $id, $stockup, $DataTitle, $DataQua, $DataId,  $DataStockStatus, $DataProduktBeschreibung;
 
 if (isset($_GET['id']))
 {
@@ -26,17 +26,15 @@ if (isset($_GET['id']))
 ?>
 <div class="container; col-8">
     <div class="row">
-        <h1>Artikel Ansicht</h1>
+        <h2>Artikel Ansicht</h2>
     </div>
-    <h2><?php global $DataTitle; echo $DataTitle; ?></h2>
+    <h1><?php global $DataTitle; echo $DataTitle; ?></h1>
     <div class="row">
         <div class="container col-8">
-            <h4>Durchschnittliche Bewertung: <span class="label label-default float-right"><?php echo $DataAvRating; ?></span></h4>
-            <h4>Anzahl an Bewertungen: <span class="label label-default float-right"><?php echo $DataRatingCount; ?></span></h4>
             <h4>Status <span class="label label-default float-right"><?php echo $DataStockStatus; ?></span></h4>
             <h4>Lagernd <span class="label label-default float-right"><?php echo  $DataQua; ?></span></h4>
 
-                <h4>Stock Zugang:
+                <h4>Gelieferte Menge:
                     
                     <button class="btn btn-primary float-right" onclick="DomSub()">Speichern</button>
                     <input type="hidden" id="idfeld" value="<?php echo $id; ?>">
@@ -78,7 +76,7 @@ if (isset($_GET['id']))
 
 function getData()
 {
-    global $wpdb, $id, $DataTitle, $DataAvRating, $DataRatingCount, $DataQua, $DataId, $DataStockStatus, $DataProduktBeschreibung;
+    global $wpdb, $id, $DataTitle, $DataQua, $DataId, $DataStockStatus, $DataProduktBeschreibung;
     // this adds the prefix which is set by the user upon instillation of wordpress
     $table_name1 = $wpdb->prefix . "posts";
     $table_name2 = $wpdb->prefix . "wc_product_meta_lookup";
