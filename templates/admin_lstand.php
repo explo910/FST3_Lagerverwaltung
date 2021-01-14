@@ -41,7 +41,10 @@
             <thead>
                 <tr>
                 <th style="font-weight: bold;text-align: left" scope="col">Zutat</th>
-                <th style="font-weight: bold;text-align: left" scope="col">Lagermenge</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand SOLL</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand IST</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Auszulagernde Menge</th>
+                <th style="font-weight: bold;text-align: left" scope="col">zu ändernde Menge</th>
                 <th style="font-weight: bold;text-align: left" scope="col">Bestand aktualisieren</th>
                 </tr>
             </thead>
@@ -53,6 +56,9 @@
                         <tr>
                             <td style="text-align: left"><?php echo $retrieved_data->post_title;?></td>
                             <td style="text-align: left"><?php echo $retrieved_data->stock_quantity;?></td>
+                            <td style="text-align: left">Lagerbestand IST</td>
+                            <td style="text-align: left">Auszulagernde Menge</td>
+                            <td style="text-align: left"><input type="number" name="<?php echo $retrieved_data->ID;?>"></input></td>
                             <td style="text-align: left"><a href="admin.php?page=gyc_lakt&id=<?php echo $retrieved_data->ID;?>">aktualisieren</a></td>
                         </tr>
                         <?php 
