@@ -28,11 +28,11 @@
                 if(isset($_POST[$i])) {
                     if($_POST[$i] != 0) {
                         if ($_POST[$i]>0 && $changetype=="") {
-                            $changetype="E";
+                            $changetype="Eingelagert";
                         } else if ($_POST[$i]<0 && $changetype=="") {
-                            $changetype="A";
-                        } else if ($_POST[$i]<0 && $changetype=="E" || $_POST[$i]>0 && $changetype=="A") {
-                            $changetype="B";
+                            $changetype="Ausgelagert";
+                        } else if ($_POST[$i]<0 && $changetype=="Eingelagert" || $_POST[$i]>0 && $changetype=="Ausgelagert") {
+                            $changetype="Kombiniert";
                         }
                         $tempstockint = $wpdb->get_var("select stock from internal_stock where wc_post=$i");
                         $tempstockpub = $wpdb->get_var("select stock_quantity from $table_pml WHERE product_id='$i' ");
@@ -56,6 +56,7 @@
 
             if($changes != "") {
                 $current_user = wp_get_current_user();
+                $changes=substr($changes, 0, -1);
                 $wpdb->query("insert hist(timestmp,person,change_log,change_type) values ('".date("Y.m.d H:i:s")."','".$current_user->user_login."','".$changes."','".$changetype."')");
             }
         }
@@ -98,7 +99,7 @@
                 <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand SOLL</th>
                 <th style="font-weight: bold;text-align: left" scope="col">Auszulagernde Menge</th>
                 <th style="font-weight: bold;text-align: left" scope="col">zu ändernde Menge</th>
-                <th style="font-weight: bold;text-align: left" scope="col">Bestand aktualisieren</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Ware entsorgen</th>
                 </tr>
             </thead>
             <tbody>
@@ -114,7 +115,7 @@
                             <td style="text-align: left"><?php echo $retrieved_data->stock;?></td>
                             <td style="text-align: left"><?php echo $retrieved_data->stock-$retrieved_data->stock_quantity;?></td>
                             <td style="text-align: left"><input type="number" name="<?php echo $retrieved_data->ID;?>" value="0"></input></td>
-                            <td style="text-align: left"><a href="admin.php?page=gyc_lakt&id=<?php echo $retrieved_data->ID;?>">aktualisieren</a></td>
+                            <td style="text-align: left"><a href="admin.php?page=gyc_lakt&id=<?php echo $retrieved_data->ID;?>">Ware entsorgen</a></td>
                         </tr>
                         <?php 
                     }
@@ -122,7 +123,8 @@
             </tbody>
         </table>
 
-        <input type="submit">
+        <input class="btn btn-primary" type="submit" value="Lagerstand aktualisieren">
+        
         </form>
 
 
