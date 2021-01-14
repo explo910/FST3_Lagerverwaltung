@@ -17,28 +17,46 @@
         $table_pm = $wpdb->prefix . "postmeta";
 
 
+        //E,A,B
+
+
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // collect value of input field
+            $changes="";
+            $changetype="";
             for($i=0;$i<9999;$i++) {
                 if(isset($_POST[$i])) {
                     if($_POST[$i] != 0) {
-                        $wpdb->query("update internal_stock set stock=stock+$_POST[$i] where wc_post=$i");
-                    
-                        $wpdb->query("UPDATE $table_pm SET meta_value=meta_value + $_POST[$i] WHERE post_id='$i' and meta_key = '_stock' ");
-                        $wpdb->query("UPDATE $table_pm SET meta_value= 'instock' WHERE post_id='$i' and meta_key = '_stock_status'");
-                        $wpdb->query("UPDATE $table_pml SET stock_quantity=stock_quantity + $_POST[$i] WHERE product_id='$i' ");
-                        $wpdb->query("UPDATE $table_pml SET stock_status='instock' WHERE product_id='$i' and stock_quantity > '0' ");
+                        if ($_POST[$i]>0 && $changetype=="") {
+                            $changetype="E";
+                        } else if ($_POST[$i]<0 && $changetype=="") {
+                            $changetype="A";
+                        } else if ($_POST[$i]<0 && $changetype=="E" || $_POST[$i]>0 && $changetype=="A") {
+                            $changetype="B";
+                        }
+                        $tempstockint = $wpdb->get_var("select stock from internal_stock where wc_post=$i");
+                        $tempstockpub = $wpdb->get_var("select stock_quantity from $table_pml WHERE product_id='$i' ");
 
+                        if ($_POST[$i] < 0 && $tempstockint+$_POST[$i] >= $tempstockpub) {
+                            $wpdb->query("update internal_stock set stock=stock+$_POST[$i] where wc_post=$i");
+                        } else {
+                            $wpdb->query("update internal_stock set stock=stock+$_POST[$i] where wc_post=$i");
+                            $wpdb->query("UPDATE $table_pm SET meta_value=meta_value + $_POST[$i] WHERE post_id='$i' and meta_key = '_stock' ");
+                            $wpdb->query("UPDATE $table_pm SET meta_value= 'instock' WHERE post_id='$i' and meta_key = '_stock_status'");
+                            $wpdb->query("UPDATE $table_pml SET stock_quantity=stock_quantity + $_POST[$i] WHERE product_id='$i' ");
+                            $wpdb->query("UPDATE $table_pml SET stock_status='instock' WHERE product_id='$i' and stock_quantity > '0' ");
+                        }
+
+                        $productname=$wpdb->get_var("select post_title from $table_posts where id=$i");
+                        $newstock=$tempstockint+$_POST[$i];
+                        $changes=$changes."$productname wurde von $tempstockint auf $newstock geändert|";
                     }
                 }
             }
 
-
-            $name = $_POST['fname'];
-            if (empty($name)) {
-                echo "Name is empty";
-            } else {
-                echo $name;
+            if($changes != "") {
+                $current_user = wp_get_current_user();
+                $wpdb->query("insert hist(timestmp,person,change_log,change_type) values ('".date("Y.m.d H:i:s")."','".$current_user->user_login."','".$changes."','".$changetype."')");
             }
         }
         ?>
@@ -87,10 +105,12 @@
                 <?php
                     foreach ($retrieve_data as $retrieved_data)
                     { 
+                        $minstock = $wpdb->get_var("select meta_value from $table_pm where post_id=$retrieved_data->ID and meta_key='_low_stock_amount'");
+
                         ?>
                         <tr>
                             <td style="text-align: left"><?php echo $retrieved_data->post_title;?></td>
-                            <td style="text-align: left"><?php echo $retrieved_data->stock_quantity;?></td>
+                            <td style="text-align: left <?php if ($retrieved_data->stock_quantity<$minstock) echo "; background-color: red"?>"><?php echo $retrieved_data->stock_quantity;?></td>
                             <td style="text-align: left"><?php echo $retrieved_data->stock;?></td>
                             <td style="text-align: left"><?php echo $retrieved_data->stock-$retrieved_data->stock_quantity;?></td>
                             <td style="text-align: left"><input type="number" name="<?php echo $retrieved_data->ID;?>" value="0"></input></td>
@@ -102,8 +122,6 @@
             </tbody>
         </table>
 
-        
-        Name: <input type="text" name="fname">
         <input type="submit">
         </form>
 
@@ -112,11 +130,5 @@
 
     </div>
 </div>
-<!-- 
-update internal_stock set stock=stock+1 where wc_post=22;
-update internal_stock set stock=stock-2 where wc_post=22;
 
-
-insert hist(timestmp,person,change_log,change_type) values ();
--->
 <?php
