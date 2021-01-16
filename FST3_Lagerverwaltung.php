@@ -45,6 +45,25 @@ function deactivate_myplugin() {
     Inc\Base\Deactivate::deactivate();
 }
 
+//Create Tables
+global $wpdb;
+//Create InternalStock
+$wpdb->query("create table if not exists internal_stock(
+    stockID int primary key auto_increment,
+    stock int,
+    wc_post bigint(20)unsigned,
+    foreign key (wc_post) references ".$wpdb->prefix."posts(ID) on delete cascade
+    )");
+//Create Table hist
+$wpdb->query("create table if not exists hist(
+    histID int primary key auto_increment,
+    timestmp datetime,
+    person varchar(32),
+    change_log varchar(2600),
+    change_type varchar(16)
+    )");
+
+
 //activation
 register_activation_hook( __FILE__, 'activate_myplugin');
 
