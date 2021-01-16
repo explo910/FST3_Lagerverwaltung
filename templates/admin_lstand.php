@@ -15,6 +15,7 @@
         $table_tr = $wpdb->prefix . "term_relationships";
         $table_t = $wpdb->prefix . "terms";
         $table_pm = $wpdb->prefix . "postmeta";
+        global $Zutatenstring;
 
 
         //E,A,B
@@ -105,12 +106,15 @@
             </thead>
             <tbody>
                 <?php
+                    global $Zutatenstring;
                     foreach ($retrieve_data as $retrieved_data)
                     { 
                         $minstock = $wpdb->get_var("select meta_value from $table_pm where post_id=$retrieved_data->ID and meta_key='_low_stock_amount'");
                         $colorstring = "";
                         if ($retrieved_data->stock<$minstock) {
                             $colorstring = "; background-color: red";
+                            $anzahl = $minstock*1.5-$retrieved_data->stock;
+                            $Zutatenstring = $Zutatenstring.$anzahl."x".$retrieved_data->post_title."%0D%0A";
                         } else if ($retrieved_data->stock<$minstock*1.5) {
                             $colorstring = "; background-color: yellow";
                         }
@@ -127,10 +131,20 @@
                         <?php 
                     }
                 ?>
+                        <tr>
+                            <td style="text-align: left"></td>
+                            <td style="text-align: left"><a class="btn btn-primary" href="mailto:lieferant@beispiel.com?subject=Zutatenbestellung%20GetYourCake&body=Sehr%20geehrtes%20Verkaufsteam%2C%0D%0A%0D%0AHiermit%20bestellen%20wir%20folgende%20Produkte%3A%0D%0A%0D%0A<?php echo $Zutatenstring ?>%0D%0AMit%20freundlichen%20Gr%C3%BC%C3%9Fen%20%0D%0AGetYourCake%20Einkaufsabteilung">Bestellung erstellen</a></td>
+                            <td style="text-align: left"></td>
+                            <td style="text-align: left"></td>
+                            <td style="text-align: left"></td>
+                            <td style="text-align: left"><input class="btn btn-primary" type="submit" value="Lagerstand aktualisieren"></td>
+                            <td style="text-align: left"></td>
+                        </tr>
             </tbody>
         </table>
 
-        <input class="btn btn-primary" type="submit" value="Lagerstand aktualisieren">
+        
+
         
         </form>
 
