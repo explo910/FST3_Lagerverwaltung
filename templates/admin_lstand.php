@@ -95,10 +95,10 @@
             <thead>
                 <tr>
                 <th style="font-weight: bold;text-align: left" scope="col">Zutat</th>
-                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand IST</th>
-                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand SOLL</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand Gesamt</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Lagerbestand Verfügbar</th>
                 <th style="font-weight: bold;text-align: left" scope="col">Mindestlagerbestand</th>
-                <th style="font-weight: bold;text-align: left" scope="col">Auszulagernde Menge</th>
+                <th style="font-weight: bold;text-align: left" scope="col">Auftragsmenge</th>
                 <th style="font-weight: bold;text-align: left" scope="col">zu ändernde Menge</th>
                 <th style="font-weight: bold;text-align: left" scope="col">Ware entsorgen</th>
                 </tr>
@@ -109,16 +109,16 @@
                     { 
                         $minstock = $wpdb->get_var("select meta_value from $table_pm where post_id=$retrieved_data->ID and meta_key='_low_stock_amount'");
                         $colorstring = "";
-                        if ($retrieved_data->stock_quantity<$minstock) {
+                        if ($retrieved_data->stock<$minstock) {
                             $colorstring = "; background-color: red";
-                        } else if ($retrieved_data->stock_quantity<$minstock*1.5) {
+                        } else if ($retrieved_data->stock<$minstock*1.5) {
                             $colorstring = "; background-color: yellow";
                         }
                         ?>
                         <tr>
                             <td style="text-align: left"><?php echo $retrieved_data->post_title;?></td>
-                            <td style="text-align: left <?php echo $colorstring; ?>"><?php echo $retrieved_data->stock_quantity;?></td>
-                            <td style="text-align: left"><?php echo $retrieved_data->stock;?></td>
+                            <td style="text-align: left <?php echo $colorstring; ?>"><?php echo $retrieved_data->stock;?></td>
+                            <td style="text-align: left"><?php echo $retrieved_data->stock_quantity;?></td>
                             <td style="text-align: left"><?php echo $minstock;?></td>
                             <td style="text-align: left"><?php echo $retrieved_data->stock-$retrieved_data->stock_quantity;?></td>
                             <td style="text-align: left"><input type="number" name="<?php echo $retrieved_data->ID;?>" value="0"></input></td>

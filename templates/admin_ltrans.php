@@ -1,5 +1,5 @@
 <div class="wrap">
-  <h1>Lagertransaktionsliste - Spechtelliste
+  <h1>Lagertransaktionsliste
   </h1>
 </div>
 
@@ -17,7 +17,7 @@
       <div class="row-3">
         Anzahl Eintr&auml;ge: 
         <input type="text" name="lines">
-        <input type="submit" value="aktualisieren"> 
+        <input class="btn btn-primary" type="submit" value="aktualisieren"> 
         </div>
       </form>
     </div>
