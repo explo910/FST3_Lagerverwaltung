@@ -13,6 +13,7 @@
          Von: <input type="date" name="von">
          Bis: <input type="date" name="bis">
       </div>
+      </br>
       <div class="row-3">
         Anzahl Eintr&auml;ge: 
         <input type="text" name="lines">
@@ -55,22 +56,24 @@
                 if (isset($_POST['bis']) and $_POST['bis'] > 0)
                 {
                     $bis = $_POST['bis'];
+                    $bis = date('Y-m-d', strtotime($bis. ' + 1 days'));
                 }
+            }
 
                 global $wpdb;
                 $table_hist = "hist";
                 if (isset($von) && isset($bis))
                 {
                     $retrieve_data = $wpdb->get_results("SELECT hist.histID, hist.timestmp, hist.person, hist.change_log, hist.change_type
-            FROM $table_hist AS `hist` where hist.timestmp between \'$von\' and \'$bis\' order by hist.histID desc");
+                    FROM $table_hist AS `hist` where hist.timestmp >= '$von' and  hist.timestmp <= '$bis' order by hist.histID desc");
                 }
                 else
                 {
                     $retrieve_data = $wpdb->get_results("SELECT hist.histID, hist.timestmp, hist.person, hist.change_log, hist.change_type
-            FROM $table_hist AS `hist` order by hist.histID desc");
+                    FROM $table_hist AS `hist` order by hist.histID desc");
                 }
 
-            }
+            
             $counter = 2;
             foreach ($retrieve_data as $retrieved_data)
             {
@@ -87,7 +90,7 @@
             <?php echo $retrieved_data->person;?>
           </td>
           <td style="text-align: left">
-            <?php echo $retrieved_data->change_log;?>
+            <?php echo str_replace("|", "</br>", $retrieved_data->change_log);?>
           </td>
           <td style="text-align: left">
             <?php echo $retrieved_data->change_type;?>
