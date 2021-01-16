@@ -67,6 +67,7 @@
                     $retrieve_data = $wpdb->get_results("SELECT hist.histID, hist.timestmp, hist.person, hist.change_log, hist.change_type
                     FROM $table_hist AS `hist` where hist.timestmp >= '$von' and  hist.timestmp <= '$bis' order by hist.histID desc");
                 }
+
                 else
                 {
                     $retrieve_data = $wpdb->get_results("SELECT hist.histID, hist.timestmp, hist.person, hist.change_log, hist.change_type
